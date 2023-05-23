@@ -59,21 +59,7 @@ const MovieItem = (props) => {
   return (
     <div className="movie-card">
       <div className="movie-card__image">
-        <Image
-          className="img"
-          src={setPoster(poster)}
-          alt="logo"
-          placeholder={
-            <Spin size="large">
-              <div
-                style={{
-                  height: '255px',
-                  margin: '24px',
-                }}
-              ></div>
-            </Spin>
-          }
-        />
+        <Image className="img" src={setPoster(poster)} alt="logo" placeholder={<Spin size="large" />} />
       </div>
       <div className="movie-card__content">
         <div className="movie-card__content--wrapper">

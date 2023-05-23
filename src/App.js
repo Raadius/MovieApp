@@ -1,45 +1,55 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from 'react';
+import { debounce } from 'lodash';
 
 import ApiService from './api-service/api-service';
 import SearchBar from './components/search-bar/search-bar.component';
 import MovieList from './components/movie-list/movie-list.component';
-
+import LoadingSpinner from './components/loading-spinner/loading-spinner.component';
+import ErrorMessage from './components/error-message/error-message.component';
 import './App.scss';
 
 const movieApi = new ApiService();
+
 const App = () => {
-  const [filmsData, setFilmsData] = useState([]);
+  const [filmsData, setFilmsData] = useState();
   const [request, setRequest] = useState('');
   const [page, setPage] = useState(1);
-  useEffect(() => {
-    movieApi.getMovies(request, page).then((data) => {
-      const arr = [];
-      data.forEach((item) => {
-        const listItem = {
-          id: item.id,
-          title: item.title,
-          release_date: item.release_date,
-          poster: item.poster_path,
-          description: item.overview,
-          genres: item.genre_ids,
-          votes: item.vote_average,
-          rating: item.popularity,
-        };
-        arr.push(listItem);
-        setFilmsData(arr);
-      });
-    });
-  }, [request, page]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [total, setTotal] = useState(0);
 
-  const onSearchChange = (event) => {
+  useEffect(() => {
+    movieApi
+      .getMovies(request, page)
+      .then((filmsData) => {
+        setFilmsData(filmsData.results);
+        setIsLoading(false);
+        setTotal(filmsData.total_results);
+      })
+      .catch((err) => {
+        setError(true);
+        setIsLoading(false);
+        console.log('error caught');
+        console.log(err);
+      });
+  }, [request, page, total, error]);
+
+  const onSearchChange = debounce((event) => {
+    setIsLoading(true);
     setRequest(event.target.value);
-  };
+  }, 500);
+
+  const loadingStatus = isLoading ? <LoadingSpinner /> : null;
+  const showMovies = !isLoading ? <MovieList filmsData={filmsData} /> : null;
+  const showError = total === 0 ? <ErrorMessage /> : null;
 
   return (
     <div>
       <SearchBar placeholder="Type here to search!" onSearchChange={onSearchChange} />
-      <MovieList filmsData={filmsData} />
+      {loadingStatus}
+      {showMovies}
+      {showError}
     </div>
   );
 };

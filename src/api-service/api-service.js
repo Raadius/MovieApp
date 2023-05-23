@@ -16,6 +16,6 @@ export default class ApiService {
     const res = await this.getResourceData(
       `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${request}&page=${page}`
     );
-    return res.results;
+    return res;
   }
 }

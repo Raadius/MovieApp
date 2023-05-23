@@ -22,16 +22,16 @@ const App = () => {
   useEffect(() => {
     movieApi
       .getMovies(request, page)
-      .then((filmsData) => {
-        setFilmsData(filmsData.results);
+      .then((moviesData) => {
+        setFilmsData(moviesData.results);
         setIsLoading(false);
-        setTotal(filmsData.total_results);
+        setTotal(moviesData.total_results);
       })
-      .catch((err) => {
+      .catch((error) => {
         setError(true);
         setIsLoading(false);
         console.log('error caught');
-        console.log(err);
+        console.log(error);
       });
   }, [request, page, total, error]);
 

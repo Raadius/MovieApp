@@ -35,9 +35,13 @@ export default class ApiService {
   }
 
   async getMovieGenres() {
-    const res = await this.getResourceData(
-      `https://api.themoviedb.org/3/genre/movie/list?api_key=${apiKey}&language=en-US`
-    );
-    return res.genres;
+    try {
+      const res = await this.getResourceData(
+        `https://api.themoviedb.org/3/genre/movie/list?api_key=${apiKey}&language=en-US`
+      );
+      return res.genres;
+    } catch (error) {
+      console.log(error);
+    }
   }
 }

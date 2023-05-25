@@ -4,4 +4,17 @@
   background: white;
   width: 1010px;
   font-family: 'Inter', sans-serif;
+
+}
+  
+  .pagination-wrapper {
+    height: 70px;
+    width: 100%;
+    padding: 10px;
+    margin: 0 auto;
+
+    &__item {
+      width: 30%;
+      margin: 0 auto;
+    }
 }

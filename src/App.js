@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from 'react';
 import { debounce } from 'lodash';
+import { Pagination } from 'antd';
 
 import ApiService from './api-service/api-service';
 import SearchBar from './components/search-bar/search-bar.component';
@@ -15,7 +16,7 @@ const App = () => {
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [total, setTotal] = useState(0);
+  const [total, setTotal] = useState();
   const [genres, setGenres] = useState([]);
 
   const movieApi = new ApiService();
@@ -25,9 +26,14 @@ const App = () => {
       movieApi
         .getPopularMovies(page)
         .then((moviesData) => {
+          console.log(moviesData.pageSize);
           setFilmsData(moviesData.results);
           setIsLoading(false);
-          setTotal(moviesData.total_results);
+          if (moviesData.total_pages > 10000) {
+            setTotal(10000);
+          } else {
+            setTotal(moviesData.total_pages);
+          }
         })
         .catch((error) => {
           setError(true);
@@ -59,9 +65,17 @@ const App = () => {
     setRequest(event.target.value);
   }, 500);
 
+  const onPageChange = (page) => {
+    setPage(page);
+  };
+
   const loadingStatus = isLoading ? <LoadingSpinner /> : null;
   const showMovies = !isLoading ? <MovieList filmsData={filmsData} genreList={genres} /> : null;
   const showError = total === 0 && !isLoading ? <ErrorMessage /> : null;
+  const showPagination =
+    !isLoading && total > 0 ? (
+      <Pagination defaultCurrent={1} pageSize={20} showSizeChanger={false} total={total} onChange={onPageChange} />
+    ) : null;
 
   return (
     <div>
@@ -69,6 +83,9 @@ const App = () => {
       {loadingStatus}
       {showMovies}
       {showError}
+      <div className="pagination-wrapper">
+        <div className="pagination-wrapper__item">{showPagination}</div>
+      </div>
     </div>
   );
 };

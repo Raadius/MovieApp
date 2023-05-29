@@ -1,8 +1,8 @@
 import { Alert, Space } from 'antd';
 
-const ErrorMessage = () => {
+const NotFoundMessage = () => {
   return (
-    <Space direction="vertical" style={{ width: '51%', marginLeft: '380px' }}>
+    <Space direction="vertical" style={{ width: '80%', marginLeft: '100px' }}>
       <Alert
         message="We can't find any results for your request. But we're sure there's gonna be some Netflix adaptation for...whatever it is..."
         type="error"
@@ -13,4 +13,4 @@ const ErrorMessage = () => {
   );
 };
 
-export default ErrorMessage;
+export default NotFoundMessage;

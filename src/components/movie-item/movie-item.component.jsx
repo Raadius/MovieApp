@@ -104,6 +104,7 @@ const MovieItem = (props) => {
         <Rate
           count={10}
           allowHalf={true}
+          allowClear={true}
           className="movie-card__content__rating"
           defaultValue={itemRating}
           onChange={onCLickRaiting}

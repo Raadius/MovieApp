@@ -85,9 +85,17 @@ const App = () => {
   };
 
   const setMovieRating = (movieId, rating) => {
-    movieApi.setMovieRating(movieId, rating, localStorageSessionId).catch((err) => {
-      console.log('failed to send post request', err);
-    });
+    if (rating === 0) {
+      movieApi.deleteMovieRating(movieId, localStorageSessionId).catch((err) => {
+        console.log('Error occurred when we were trying to delete movie rating: ', err);
+      });
+      const newRatedMovies = ratedMovies.filter((movie) => movie.id !== movieId);
+      setRatedMovies(newRatedMovies);
+    } else {
+      movieApi.setMovieRating(movieId, rating, localStorageSessionId).catch((err) => {
+        console.log('Error occurred when we were trying to set movie rating: ', err);
+      });
+    }
 
     if (localStorage.getItem('movieRating') === null) {
       const obj = {};
@@ -140,13 +148,21 @@ const App = () => {
         type="error"
       />
     ) : null;
-
+  const noRatedMovies =
+    ratedMovies.length === 0 && !isLoading && !error ? (
+      <Alert
+        message="No rated movies yet!"
+        description="Rate a movie first and it will be available for you here!"
+        type="warning"
+        style={{ marginTop: '20px', width: '70%', margin: '0 auto', textAlign: 'center' }}
+      />
+    ) : null;
+  const showWhatWeHave = ratedMovies.length > 0 && !isLoading && !error ? showPopularMovies : noRatedMovies;
   const changeTabs = (value) => {
     if (value === '2') {
       movieApi
         .getRatedMovies(localStorageSessionId, ratedMoviesPage)
         .then((moviesData) => {
-          console.log(moviesData.results);
           setRatedMovies(moviesData.results);
           setIsLoading(false);
           setRatedMoviesTotal(moviesData.total_results);
@@ -183,7 +199,7 @@ const App = () => {
         <>
           {loadingStatus}
           {fetchError}
-          {showPopularMovies}
+          {showWhatWeHave}
           {notFoundMessage}
           <div className="pagination-wrapper">
             <div className="pagination-wrapper__item">{showRatedPagination}</div>
@@ -195,7 +211,9 @@ const App = () => {
 
   return (
     <div className="App">
-      <Tabs centered defaultActiveKey="1" items={items} onTabClick={changeTabs} />
+      <div className="tabs-header">
+        <Tabs centered defaultActiveKey="1" items={items} onTabClick={changeTabs} />
+      </div>
     </div>
   );
 };

@@ -65,7 +65,7 @@ export default class ApiService {
       value: rating,
     };
     return await axios.post(
-      `https://api.themoviedb.org/3/movie/${id}/rating?api_key=7d0349337e7da854b0da94f99185e198&guest_session_id=${sessionId}`,
+      `https://api.themoviedb.org/3/movie/${id}/rating?api_key=${apiKey}&guest_session_id=${sessionId}`,
       requestBody,
       { headers }
     );
@@ -73,9 +73,15 @@ export default class ApiService {
 
   async getRatedMovies(sessionId, page) {
     const response = await axios.get(
-      `https://api.themoviedb.org/3/guest_session/${sessionId}/rated/movies?api_key=7d0349337e7da854b0da94f99185e198&language=en-US&sort_by=created_at.asc&page=${page}`
+      `https://api.themoviedb.org/3/guest_session/${sessionId}/rated/movies?api_key=${apiKey}&language=en-US&sort_by=created_at.asc&page=${page}`
     );
 
     return response.data;
+  }
+
+  async deleteMovieRating(id, sessionId) {
+    return await axios.delete(
+      `https://api.themoviedb.org/3/movie/${id}/rating?api_key=${apiKey}&guest_session_id=${sessionId}`
+    );
   }
 }

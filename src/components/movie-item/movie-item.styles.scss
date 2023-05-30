@@ -76,3 +76,39 @@
     text-align: center;
     width: 30px;
 }
+
+
+@media screen and (max-width: 768px) {
+    .movie-card {
+        display: inline-flex;
+        width: 110%;
+        height: 245px;
+        margin: 0 12px;
+
+        &__image {
+            width: 60px;
+            height: 91px;
+            padding: 10px;
+        }
+        &__content {
+            padding: 9px 2px 7px;
+            width: 80%;
+
+            &--wrapper {
+                width: 98%; 
+
+                &__description {
+                    position: absolute;
+                    left: 20px;
+                    width: 368px;
+                }
+            }
+            
+            &__rating {
+                position: relative;
+                top: -24px;
+                right: -75px;
+            }
+        }
+    }
+}

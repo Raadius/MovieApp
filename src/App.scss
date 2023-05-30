@@ -4,8 +4,13 @@
   background: white;
   width: 1010px;
   font-family: 'Inter', sans-serif;
+  min-height: 100vh;
 
 }
+  .tabs-header {
+    display: flex;
+    flex-direction: column;
+  }
   
   .pagination-wrapper {
     height: 70px;
@@ -17,4 +22,26 @@
       width: 46%;
       margin: 0 auto;
     }
+}
+
+@media screen and (max-width: 768px) {
+  .App {
+    min-height: 1755px;
+    width: 420px;
+
+    .tabs-header {
+      margin-bottom: 16px;
+      margin-top: 20px;
+    }
+
+    .pagination-wrapper {
+      width: 110%;
+      margin-left: -12px;
+
+        &__item {
+          width: 88%;
+          margin-top: 30px;
+        }
+    }
+  }
 }

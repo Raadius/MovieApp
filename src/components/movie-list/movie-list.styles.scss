@@ -6,4 +6,13 @@
     margin: 0 auto;
     padding-top: 20px;
     width: 1010px;
+
+    @media screen and (max-width: 768px) {
+       width: 356px;
+       display: grid;
+       grid-template-columns: 1fr;
+       grid-template-rows: 1fr;
+       grid-gap: 24px;
+       margin-left: 0px;
+    }
 }

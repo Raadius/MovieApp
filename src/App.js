@@ -27,12 +27,7 @@ const App = () => {
   const localStorageSessionId = localStorage.getItem('guestSessionId');
 
   useEffect(() => {
-    movieApi.createGuestSession().then((guestSessionId) => {
-      setGuestSessionId(guestSessionId);
-      if (localStorage.getItem('guestSessionId') === null) {
-        localStorage.setItem('guestSessionId', guestSessionId);
-      }
-    });
+    movieApi.getMovieGenres().then((genres) => setGenres(genres));
   }, []);
 
   useEffect(() => {
@@ -72,7 +67,12 @@ const App = () => {
   }, [request, page, total, error]);
 
   useEffect(() => {
-    movieApi.getMovieGenres().then((genres) => setGenres(genres));
+    movieApi.createGuestSession().then((guestSessionId) => {
+      setGuestSessionId(guestSessionId);
+      if (localStorage.getItem('guestSessionId') === null) {
+        localStorage.setItem('guestSessionId', guestSessionId);
+      }
+    });
   }, []);
 
   const onSearchChange = debounce((event) => {

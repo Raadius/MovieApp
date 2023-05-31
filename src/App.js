@@ -27,6 +27,15 @@ const App = () => {
   const localStorageSessionId = localStorage.getItem('guestSessionId');
 
   useEffect(() => {
+    movieApi.createGuestSession().then((guestSessionId) => {
+      setGuestSessionId(guestSessionId);
+      if (localStorage.getItem('guestSessionId') === null) {
+        localStorage.setItem('guestSessionId', guestSessionId);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
     if (request.length === 0) {
       movieApi
         .getPopularMovies(page)
@@ -64,15 +73,6 @@ const App = () => {
 
   useEffect(() => {
     movieApi.getMovieGenres().then((genres) => setGenres(genres));
-  }, []);
-
-  useEffect(() => {
-    movieApi.createGuestSession().then((guestSessionId) => {
-      setGuestSessionId(guestSessionId);
-      if (localStorage.getItem('guestSessionId') === null) {
-        localStorage.setItem('guestSessionId', guestSessionId);
-      }
-    });
   }, []);
 
   const onSearchChange = debounce((event) => {

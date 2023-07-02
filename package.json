@@ -59,7 +59,7 @@
     "sass": "^1.62.1"
   },
   "lint-staged": {
-    "*.js": [
+    "*.jsx": [
       "npm run lint:fix",
       "git add"
     ]

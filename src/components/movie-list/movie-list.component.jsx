@@ -31,6 +31,7 @@ const MovieList = ({ filmsData, genreList, setMovieRating }) => {
   }
 
   const movieBunchItems = myArr.map((item) => {
+    console.log(item);
     const { id } = item;
     return <MovieItem key={id} item={item} setMovieRating={(value) => setMovieRating(id, value)} />;
   });
